@@ -40,7 +40,9 @@ public class HomeController {
 	@GetMapping("/viewNotes")
 	public String viewNotes(Model m) {
 		System.out.println("View Notes");
-		
+		//View Notes
+		//Hibernate: select n1_0.id,n1_0.date,n1_0.description,n1_0.title from note n1_0
+		//Hibernate: select n1_0.id,n1_0.date,n1_0.description,n1_0.title,n1_0.user_id from notes n1_0 where n1_0.user_id is null
 		List<Note> notes=noteservice.findAllNotes();
 		m.addAttribute("notesList", notes);
 		return "ViewNotes";
@@ -57,7 +59,10 @@ public class HomeController {
 	@GetMapping("/deleteNotes/{id}")
 	public String deleteNotes(@PathVariable int id,HttpSession session) {
 		System.out.println("Delete Notes");
-
+		//Delete Notes
+		//Hibernate: select n1_0.id,n1_0.date,n1_0.description,n1_0.title from note n1_0 where n1_0.id=?
+		//Hibernate: delete from note where id=?
+		//http://localhost:8085/deleteNotes/3
 	boolean notes=noteservice.deleteNotes(id);
 	
 	
@@ -68,7 +73,7 @@ public class HomeController {
 	@PostMapping("/saveNotes")
 	public String saveNotes(@ModelAttribute Note notes) {
 		notes.setDate(LocalDate.now());
-
+	//	Hibernate: insert into notes (date,description,title,user_id) values (?,?,?,?)
 		Note note=noteservice.saveNotes(notes);
 		
 		return "Home";
@@ -76,7 +81,8 @@ public class HomeController {
 	
 	@PostMapping("/update")
 	public String updateNotes(@ModelAttribute Note notes,HttpSession session) {
-	
+		//Hibernate: select n1_0.id,n1_0.date,n1_0.description,n1_0.title from note n1_0 where n1_0.id=?
+				//Hibernate: update note set date=?,description=?,title=? where id=?
 		System.out.println("update notes");
 		notes.setDate(LocalDate.now());
 		Note note=noteservice.saveNotes(notes);
